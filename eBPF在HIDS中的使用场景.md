@@ -253,3 +253,78 @@
 
     ​	工具链：http://www.brendangregg.com/ebpf.html
 
+
+
+## 五、补充信息
+
+1. perf event 有哪些类型bpf事件？
+
+   主要是syscall 中的 sys_perf_event_open和kprobe中的perf event相关函数
+
+2. xdp的事件
+
+   tracepoint:**xdp**:**xdp**_exception
+
+   tracepoint:**xdp**:**xdp**_bulk_tx
+
+   tracepoint:**xdp**:**xdp**_redirect
+
+   tracepoint:**xdp**:**xdp**_redirect_err
+
+   tracepoint:**xdp**:**xdp**_redirect_map
+
+   tracepoint:**xdp**:**xdp**_redirect_map_err
+
+   tracepoint:**xdp**:**xdp**_cpumap_kthread
+
+   tracepoint:**xdp**:**xdp**_cpumap_enqueue
+
+   tracepoint:**xdp**:**xdp**_devmap_xmit
+
+   tracepoint:**xdp**:mem_disconnect
+
+   tracepoint:**xdp**:mem_connect
+
+   tracepoint:**xdp**:mem_return_failed
+
+   还有kprobe中的xdp
+
+3. btf 的简单定义
+
+4. bpf的单行编译脚本
+
+   编译内核部分： clang -O2 -target bpf -c bpf_hello.c -o bpf_hello.o -I/usr/include/x86_64-linux-gnu -I/home/ubuntu/projects/linux-source-5.4.0/tools/testing/selftests/bpf
+
+   用户部分：clang -DHAVE_ATTR_TEST=0 -o loader -lelf -I/home/ubuntu/projects/linux-source-5.4.0/samples/bpf -I/home/ubuntu/projects/linux-source-5.4.0/tools/lib -I/home/ubuntu/projects/linux-source-5.4.0/tools/perf -I /home/ubuntu/projects/linux-source-5.4.0/tools/include -L/usr/lib/x86_64-linux-gnu -lbcc_bpf /home/ubuntu/projects/linux-source-5.4.0/samples/bpf/bpf_load.c bpf_hello_user.c
+
+5. inotify 代码截图
+
+   ![image-20210602233732469](eBPF在HIDS中的使用场景.assets/image-20210602233732469.png)
+
+   ![image-20210602233913597](eBPF在HIDS中的使用场景.assets/image-20210602233913597.png)
+
+   ![image-20210602234033035](eBPF在HIDS中的使用场景.assets/image-20210602234033035.png)
+
+   
+
+6. audit 基础用例截图
+
+   ![image-20210602234606316](eBPF在HIDS中的使用场景.assets/image-20210602234606316.png)
+
+7. netlink connector 样例代码
+
+8. 开发支撑资源补充
+
+   每个类型能使用的helper 函数
+
+   具体跟踪点的参考， bpftrace 和sample里面对不上？
+
+   每个内核版本特性列表：https://github.com/iovisor/bcc/blob/master/docs/kernel-versions.md
+
+9. 文件监控测试程序一句话描述，ebpf执行命令
+
+   进程启动测试程序： 串行启动子进程，子进程睡眠1毫秒后退出。
+
+   文件程序：顺序读取文件内容到内存，打开后不做动作，睡眠1微秒，关闭文件
+
+   sudo **bpftrace** -e 'tracepoint:syscalls:sys_enter_openat /str(args->filename) == "go.mod"/{ printf("%s %s\n", comm, str(args->filename)); }'
