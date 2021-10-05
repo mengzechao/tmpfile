@@ -38,4 +38,4 @@ Having trouble with Pages? Check out our [documentation](https://docs.github.com
 
 ## artical
 
-[ebpf_hids](_post/2021-01-01-ebpf.md)
+[ebpf_hids](https://blog.zechao.cc/tmpfile/2021/01/01/ebpf.md)
