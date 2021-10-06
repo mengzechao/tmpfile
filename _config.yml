@@ -9,7 +9,7 @@
 title: ZECHAO
 brief-intro: 为了忘却的纪念
 baseurl: "/tmpfile" # the subpath of your site, e.g. /blog
-url: "https://blog.zechao.cc/tmpfile" # the base hostname & protocol for your site
+url: "https://mengzechao.github.io/tmpfile" # the base hostname & protocol for your site
 
 permalink: /:year/:month/:day/:title/
 
